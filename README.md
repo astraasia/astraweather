@@ -54,3 +54,14 @@ GET https://api.astracloud.com/cuaca/?kota=Jakarta&lat=-6.1751&lon=106.8650&hari
   "grafik": "data:image/png;base64,..."
 }
 
+```
+### Format Text:
+```bash
+🌍 **Cuaca di Jakarta**:
+🌡️ Suhu Saat Ini: 30°C
+💧 Kelembaban: 80%
+💨 Kecepatan Angin: 15 km/h
+🕒 Update: 2025-03-25T10:00:00Z
+
+🔮 **Prediksi Cuaca:**
+📆 2025-03-26 | 🌡️ 32°C - 24°C | 💧 85% - 75% | 🌧️ 5 mm | 💨 20 km/h - 10 km/h
