@@ -68,6 +68,6 @@ GET https://api.astracloud.com/cuaca/?kota=Jakarta&lat=-6.1751&lon=106.8650&hari
 
 ```
 
-# AstraWeather API:
+### AstraWeather Link API:
 ```bash
 https://astraasia.github.io/astraweather/index.html
