@@ -29,6 +29,8 @@ Endpoint ini digunakan untuk mengambil data cuaca berdasarkan **latitude** dan *
 ```bash
 GET https://api.astracloud.com/cuaca/?kota=Jakarta&lat=-6.1751&lon=106.8650&hari=3&format=json&unit_angin=km/h
 
+###
+
 #### Contoh Respon JSON:
 {
   "📍 Kota": "Jakarta",
