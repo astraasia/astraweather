@@ -56,7 +56,7 @@ GET https://api.astracloud.com/cuaca/?kota=Jakarta&lat=-6.1751&lon=106.8650&hari
 
 ```
 ### Format Text:
-```bash
+`
 🌍 **Cuaca di Jakarta**:
 🌡️ Suhu Saat Ini: 30°C
 💧 Kelembaban: 80%
