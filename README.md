@@ -80,8 +80,8 @@ Proyek ini dilisensikan di bawah **MIT License**. Anda bebas untuk mengedit, mem
 
 Jika Anda membutuhkan bantuan atau memiliki pertanyaan tentang penggunaan AstraWeather API, Anda dapat menghubungi kami melalui saluran berikut:
 
-- **Email Support**: support@astracloud.com
-- **Telegram**: [@AstraSupport](https://t.me/AstraSupport)
+- **Email Support**: astracloudasia@gmail.com
+- **Telegram**: [@AstrastoreeAsia](https://t.me/AstrastoreeAsia)
 - **Forum Diskusi**: [Forum AstraCloud](https://forum.astracloud.com)
 
 Kami selalu siap membantu Anda untuk memastikan pengalaman yang lancar dalam menggunakan API kami. Jangan ragu untuk menghubungi kami kapan saja!
