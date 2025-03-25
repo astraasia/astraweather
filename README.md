@@ -31,6 +31,7 @@ GET https://api.astracloud.com/cuaca/?kota=Jakarta&lat=-6.1751&lon=106.8650&hari
 
 ```
 #### Contoh Respon JSON:
+```
 {
   "📍 Kota": "Jakarta",
   "🌡️ Suhu Saat Ini": "30°C",
