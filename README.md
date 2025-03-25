@@ -73,6 +73,5 @@ GET https://api.astracloud.com/cuaca/?kota=Jakarta&lat=-6.1751&lon=106.8650&hari
 https://astraasia.github.io/astraweather/index.html
 
 ```
-## Lisensi
-```bash
+# LICENSE
 Proyek ini dilisensikan di bawah **MIT License**. Anda bebas untuk mengedit, memodifikasi, dan mendistribusikan ulang perangkat lunak ini dengan syarat memberikan atribusi yang tepat kepada pengembang asli. Lisensi lengkap dapat ditemukan di file [LICENSE](./LICENSE).
