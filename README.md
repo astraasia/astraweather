@@ -28,3 +28,27 @@ Endpoint ini digunakan untuk mengambil data cuaca berdasarkan **latitude** dan *
 #### Contoh Request:
 ```bash
 GET https://api.astracloud.com/cuaca/?kota=Jakarta&lat=-6.1751&lon=106.8650&hari=3&format=json&unit_angin=km/h
+
+#### Contoh Respon JSON:
+{
+  "📍 Kota": "Jakarta",
+  "🌡️ Suhu Saat Ini": "30°C",
+  "💧 Kelembaban": "80%",
+  "💨 Kecepatan Angin": "15 km/h",
+  "🧭 Arah Angin": "45°",
+  "🕒 Update": "2025-03-25T10:00:00Z",
+  "📅 Prediksi Cuaca": [
+    {
+      "📆 Tanggal": "2025-03-26",
+      "🌡️ Suhu Max": "32°C",
+      "🌡️ Suhu Min": "24°C",
+      "💧 Kelembaban Max": "85%",
+      "💧 Kelembaban Min": "75%",
+      "🌧️ Curah Hujan": "5 mm",
+      "💨 Angin Max": "20 km/h",
+      "💨 Angin Min": "10 km/h"
+    }
+  ],
+  "grafik": "data:image/png;base64,..."
+}
+
