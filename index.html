@@ -7,7 +7,7 @@ import time
 app = FastAPI()
 
 // 🔥 AstraCloud - API Cuaca Gratis & Tanpa Limit
-// 🚀 Dibuat oleh AstraCloud → https://astracloud.wordpress.com
+// 🚀 Dibuat oleh AstraCloud → https://gravatar.com/astracloudasia
 
 # Konfigurasi CORS agar API bisa diakses dari mana saja
 app.add_middleware(
@@ -113,9 +113,9 @@ async def get_weather(
         teks += "🔮 **Prediksi Cuaca:**\n"
         for p in hasil["📅 Prediksi Cuaca"]:
             teks += f"📆 {p['📆 Tanggal']} | 🌡️ {p['🌡️ Suhu Max']} - {p['🌡️ Suhu Min']} | 💧 {p['💧 Kelembaban Max']} - {p['💧 Kelembaban Min']} | 🌧️ {p['🌧️ Curah Hujan']} mm | 💨 {p['💨 Angin Max']} - {p['💨 Angin Min']} km/h\n"
-        teks += "\n\n// 🚀 API by AstraCloud → https://astracloud.wordpress.com"
+        teks += "\n\n// 🚀 API by AstraCloud → https://gravatar.com/astracloudasia"
         return {"text": teks}
 
     // 🎯 Hasil JSON
-    hasil["//"] = "API by AstraCloud → https://astracloud.wordpress.com"
+    hasil["//"] = "API by AstraCloud → https://gravatar.com/astracloudasia"
     return hasil
