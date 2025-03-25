@@ -75,3 +75,13 @@ https://astraasia.github.io/astraweather/index.html
 # LICENSE
 Proyek ini dilisensikan di bawah **MIT License**. Anda bebas untuk mengedit, memodifikasi, dan mendistribusikan ulang perangkat lunak ini dengan syarat memberikan atribusi yang tepat kepada pengembang asli. Lisensi lengkap dapat ditemukan di file [LICENSE](./LICENSE).
 
+
+## Dukungan
+
+Jika Anda membutuhkan bantuan atau memiliki pertanyaan tentang penggunaan AstraWeather API, Anda dapat menghubungi kami melalui saluran berikut:
+
+- **Email Support**: support@astracloud.com
+- **Telegram**: [@AstraSupport](https://t.me/AstraSupport)
+- **Forum Diskusi**: [Forum AstraCloud](https://forum.astracloud.com)
+
+Kami selalu siap membantu Anda untuk memastikan pengalaman yang lancar dalam menggunakan API kami. Jangan ragu untuk menghubungi kami kapan saja!
