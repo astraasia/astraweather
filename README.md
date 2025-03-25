@@ -65,3 +65,9 @@ GET https://api.astracloud.com/cuaca/?kota=Jakarta&lat=-6.1751&lon=106.8650&hari
 
 🔮 **Prediksi Cuaca:**
 📆 2025-03-26 | 🌡️ 32°C - 24°C | 💧 85% - 75% | 🌧️ 5 mm | 💨 20 km/h - 10 km/h
+
+```
+
+# AstraWeather API:
+```bash
+https://astraasia.github.io/astraweather/index.html
