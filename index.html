@@ -1,0 +1,150 @@
+from fastapi import FastAPI, Query, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+import aiohttp
+import asyncio
+import time
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
+
+app = FastAPI()
+
+Konfigurasi CORS
+
+app.add_middleware(
+CORSMiddleware,
+allow_origins=[""],
+allow_credentials=True,
+allow_methods=[""],
+allow_headers=["*"],
+)
+
+BASE_URL = "https://api.open-meteo.com/v1/forecast"
+
+cache_data = {}
+cache_time = {}
+
+async def fetch_weather(params: dict):
+""" Fungsi untuk mengambil data cuaca dengan retry """
+url = BASE_URL
+max_retries = 3
+timeout = 5
+
+for attempt in range(max_retries):  
+    try:  
+        async with aiohttp.ClientSession() as session:  
+            async with session.get(url, params=params, timeout=timeout) as response:  
+                if response.status == 200:  
+                    return await response.json()  
+    except Exception:  
+        if attempt < max_retries - 1:  
+            await asyncio.sleep(2)  
+        else:  
+            raise HTTPException(status_code=500, detail="Gagal mengambil data cuaca.")
+
+def generate_temperature_chart(dates, max_temps, min_temps):
+fig, ax = plt.subplots()
+ax.plot(dates, max_temps, label="Max Temp (°C)", color='red')
+ax.plot(dates, min_temps, label="Min Temp (°C)", color='blue')
+ax.set_xlabel("Tanggal")
+ax.set_ylabel("Suhu (°C)")
+ax.set_title("Grafik Suhu Harian")
+ax.legend()
+
+# Simpan grafik ke dalam buffer  
+buf = BytesIO()  
+plt.savefig(buf, format="png")  
+buf.seek(0)  
+
+# Encode gambar dalam base64  
+img_str = base64.b64encode(buf.read()).decode('utf-8')  
+buf.close()  
+
+return img_str
+
+@app.get("/cuaca/")
+async def get_weather(
+kota: str,
+lat: float = Query(..., ge=-90, le=90),
+lon: float = Query(..., ge=-180, le=180),
+hari: int = Query(1, ge=1, le=7),
+format: str = Query("json", regex="^(json|text)$"),
+unit_angin: str = Query("km/h", regex="^(km/h|m/s)$")
+):
+cache_key = f"{lat}{lon}{hari}"
+now = time.time()
+
+if cache_key in cache_data and (now - cache_time.get(cache_key, 0)) < 600:  
+    data = cache_data[cache_key]  
+else:  
+    params = {  
+        "latitude": lat,  
+        "longitude": lon,  
+        "current_weather": "true",  
+        "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum,humidity_2m_max,humidity_2m_min,windspeed_10m_max,windspeed_10m_min",  
+        "timezone": "Asia/Jakarta",  
+        "forecast_days": hari  
+    }  
+    data = await fetch_weather(params)  
+    cache_data[cache_key] = data  
+    cache_time[cache_key] = now  
+
+if "current_weather" not in data or "daily" not in data:  
+    raise HTTPException(status_code=500, detail="Data cuaca tidak tersedia.")  
+
+cuaca_sekarang = data["current_weather"]  
+prediksi = data["daily"]  
+
+# Menyiapkan data untuk grafik  
+dates = prediksi["time"]  
+max_temps = prediksi["temperature_2m_max"]  
+min_temps = prediksi["temperature_2m_min"]  
+  
+# Membuat grafik suhu harian  
+chart = generate_temperature_chart(dates, max_temps, min_temps)  
+
+# Konversi kecepatan angin jika diperlukan  
+if unit_angin == "m/s":  
+    cuaca_sekarang['windspeed'] = cuaca_sekarang['windspeed'] / 3.6  
+    prediksi['windspeed_10m_max'] = [speed / 3.6 for speed in prediksi['windspeed_10m_max']]  
+    prediksi['windspeed_10m_min'] = [speed / 3.6 for speed in prediksi['windspeed_10m_min']]  
+
+hasil = {  
+    "📍 Kota": kota,  
+    "🌡️ Suhu Saat Ini": f"{cuaca_sekarang['temperature']}°C",  
+    "💧 Kelembaban": f"{cuaca_sekarang.get('humidity', 'N/A')}%",  
+    "💨 Kecepatan Angin": f"{cuaca_sekarang['windspeed']} {unit_angin}",  
+    "🧭 Arah Angin": f"{cuaca_sekarang['winddirection']}°",  
+    "🕒 Update": cuaca_sekarang["time"],  
+    "📅 Prediksi Cuaca": [  
+        {  
+            "📆 Tanggal": prediksi["time"][i],  
+            "🌡️ Suhu Max": f"{prediksi['temperature_2m_max'][i]}°C",  
+            "🌡️ Suhu Min": f"{prediksi['temperature_2m_min'][i]}°C",  
+            "💧 Kelembaban Max": f"{prediksi.get('humidity_2m_max', [None])[i]}%",  
+            "💧 Kelembaban Min": f"{prediksi.get('humidity_2m_min', [None])[i]}%",  
+            "🌧️ Curah Hujan": f"{prediksi['precipitation_sum'][i]} mm",  
+            "💨 Angin Max": f"{prediksi['windspeed_10m_max'][i]} {unit_angin}",  
+            "💨 Angin Min": f"{prediksi['windspeed_10m_min'][i]} {unit_angin}",  
+        }  
+        for i in range(hari)  
+    ],  
+    "grafik": f"data:image/png;base64,{chart}"  
+}  
+
+if format == "text":  
+    teks = f"🌍 **Cuaca di {kota}**:\n"  
+    teks += f"🌡️ Suhu Saat Ini: {cuaca_sekarang['temperature']}°C\n"  
+    teks += f"💧 Kelembaban: {cuaca_sekarang.get('humidity', 'N/A')}%\n"  
+    teks += f"💨 Kecepatan Angin: {cuaca_sekarang['windspeed']} {unit_angin}\n"  
+    teks += f"🕒 Update: {cuaca_sekarang['time']}\n\n"  
+    teks += "🔮 **Prediksi Cuaca:**\n"  
+    for p in hasil["📅 Prediksi Cuaca"]:  
+        teks += f"📆 {p['📆 Tanggal']} | 🌡️ {p['🌡️ Suhu Max']} - {p['🌡️ Suhu Min']} | 💧 {p['💧 Kelembaban Max']} - {p['💧 Kelembaban Min']} | 🌧️ {p['🌧️ Curah Hujan']} mm | 💨 {p['💨 Angin Max']} - {p['💨 Angin Min']} {unit_angin}\n"  
+    teks += "\n\n// 🚀 API by AstraCloud → https://gravatar.com/astracloudasia"  
+    return {"text": teks}  
+
+hasil["//"] = "API by AstraCloud → https://gravatar.com/astracloudasia"  
+return hasil
+
+  
